@@ -1,0 +1,134 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=251
+
+Overview
+The lid.vim Vim plugin provides a way to interact with the lid tool to
+lookup keywords in the ID database.
+
+For more information about id utilities (lid, aid, etc), visit the 
+following pages: 
+
+    http://www.delorie.com/gnu/docs/id-utils/id-utils_toc.html 
+    http://www.gnu.org/software/idutils/idutils.html 
+
+You can download the id-utils binaries for MS-Windows from: 
+
+    http://gnuwin32.sourceforge.net/packages/id-utils.htm
+
+Usage
+You can lookup keywords in the ID database using the 'Lid' command. For
+example,
+
+      :Lid<Enter> 
+
+This will prompt you for the keyword to lookup.  The default is the current
+keyword under the cursor.  You can retrieve previously entered keywords
+using the up and down arrow keys. You can cancel the lookup by pressing the
+escape key.
+
+You can map a key to invoke the Lid command:
+
+      nnoremap <silent> <F4> :Lid <C-R><C-W><CR>
+
+Add the above mapping to your ~/.vimrc file.
+
+You can also specify the keyword to the Lid command like this:
+
+      :Lid <keyword>
+
+In the above command format, you can press the <Tab> key to expand
+keywords from a tags file.
+
+You can use the "-p" and "-v" option to the 'Lid' command to selectively
+display lines from the lid output. You can use the "-p" option to the 'Lid'
+command to list only those lid matches that contain a pattern. You can use
+the "-v" option to the 'Lid' command to list only those lid matches that
+does not contain a pattern. Only one of the "-p" or "-v" options can be used
+at a time.
+
+       :Lid -p
+       :Lid -v
+
+If you use the any one of the above options, you will prompted to enter the
+pattern you are interested in.
+
+The output of the lid command will be listed in the Vim quickfix window.
+1. You can select a line in the quickfix window and press <Enter> or double
+   click on a match to jump to that line.
+2. You can use the ":cnext" and ":cprev" commands to the jump to the next or
+   previous output line.
+3. You can use the ":colder" and ":cnewer" commands to go between multiple
+   Lid quickfix output windows.
+4. The quickfix window need not be opened always to use the lid output.
+   You can close the quickfix window and use the quickfix commands to jump
+   to the lid matches.  Use the ":copen" command to open the quickfix
+   window again.
+
+For more information about other quickfix commands read ":help quickfix"
+
+Configuration
+By changing the following variables you can configure the behavior of this
+plugin. Set the following variables in your .vimrc file using the 'let'
+command.
+
+The path to the lid executable is specified by the 'LID_Cmd' variable.  By
+default, this variable is set to lid. You can change the lid executable path
+by setting the 'LID_Cmd' variable:
+
+      let LID_Cmd = '/my/path/lid'
+
+By default, this plugin uses 'ID' as the name of the database.  This is
+defined by the 'LID_File' variable.  You can change the name/location of the
+ID database by setting the 'LID_File' variable:
+
+      let LID_File = '/my/path/ID'
+
+You can also specify more than one ID file names in the LID_File variable.
+The ID file names should be separated by a ',' character.
+
+      let LID_File = '/my/path1/ID,/my/path2/ID,/my/path3/ID'
+
+The plugin will use the first ID file name and run lid using that filename.
+If a match is found, it will return the results. If a match is not found,
+then the second ID file name will be used and this will be repeated till
+either a match is found or all the specified ID file names are processed.
+
+If more than one ID file is specified using the 'LID_File' variable, you can
+set the 'LID_Search_Multiple_ID_Files' variable to 1 to always search for a
+keyword in all the specified ID files. By default,
+'LID_Search_Multiple_ID_Files' variable is set to one. All the specified ID
+files are searched for the keyword. 
+
+      let LID_Search_Multiple_ID_Files = 0
+
+By default, when you invoke the :Lid command the quickfix window will be
+opened with the lid output.  You can disable opening the quickfix window,
+by setting the 'LID_OpenQuickfixWindow' variable to 1:
+
+      let LID_OpenQuickfixWindow = 1
+
+You can manually open the quickfix window using the :cwindow command.
+
+The 'LID_Shell_Quote_Char' variable specifies the character to use to
+escape the keyword before passing it to the lid command.  By default,
+for MS-Windows systems, no shell quote character is set.  For other
+systems, "'" is used as the the shell quote character.  You can change
+this by setting the 'LID_Shell_Quote_Char' variable:
+
+      let LID_Shell_Quote_Char = '"'
+
+By default, the ID file specified by the LID_File variable will be used.  If
+you set the 'LID_Prompt_ID_Filename' variable to 1, then every time the LID
+command will prompt for the location of the ID file.  The default ID file
+location displayed will be the last used value.  You can again set the
+'LID_Prompt_ID_Filename' variable back to 0, to turn off this prompt.  The
+last supplied ID file will be used for further Lid invocations.
+
+      let LID_Prompt_ID_Filename = 1
+
+By default, when the lid output is displayed, the cursor will be
+automatically positioned at the first matching line.  You can set the
+LID_Jump_To_Match variable to 0 to prevent this.  In this case, only the
+output from LID will be displayed.
+
+      let LID_Jump_To_Match = 0
+
