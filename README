@@ -1,29 +1,37 @@
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=251
 
 Overview
-The lid.vim Vim plugin provides a way to interact with the lid tool to
-lookup keywords in the ID database.
+
+The lid plugin integrates the GNU id-utils lid tool with Vim to lookup
+keywords in the ID database.
 
 For more information about id utilities (lid, aid, etc), visit the 
 following pages: 
 
-    http://www.delorie.com/gnu/docs/id-utils/id-utils_toc.html 
     http://www.gnu.org/software/idutils/idutils.html 
+    http://www.delorie.com/gnu/docs/id-utils/id-utils_toc.html 
 
 You can download the id-utils binaries for MS-Windows from: 
 
     http://gnuwin32.sourceforge.net/packages/id-utils.htm
 
 Usage
+
+The lid plugin introduces two Vim commands to lookup keywords in the ID
+database.
+
+      :Lid [ <keyword> ]
+      :Aid [ <keyword> ]
+
 You can lookup keywords in the ID database using the 'Lid' command. For
 example,
 
       :Lid<Enter> 
 
-This will prompt you for the keyword to lookup.  The default is the current
-keyword under the cursor.  You can retrieve previously entered keywords
-using the up and down arrow keys. You can cancel the lookup by pressing the
-escape key.
+This command will prompt you for the keyword to lookup.  The default is the
+current keyword under the cursor.  You can retrieve previously entered
+keywords using the up and down arrow keys. You can cancel the lookup by
+pressing the escape key.
 
 You can map a key to invoke the Lid command:
 
@@ -38,18 +46,31 @@ You can also specify the keyword to the Lid command like this:
 In the above command format, you can press the <Tab> key to expand
 keywords from a tags file.
 
-You can use the "-p" and "-v" option to the 'Lid' command to selectively
-display lines from the lid output. You can use the "-p" option to the 'Lid'
-command to list only those lid matches that contain a pattern. You can use
-the "-v" option to the 'Lid' command to list only those lid matches that
-does not contain a pattern. Only one of the "-p" or "-v" options can be used
-at a time.
+You can use the "-g" and "-x" option to the 'Lid' command to selectively
+display lines from the lid output. You can use the "-g" option to the 'Lid'
+command to list only those lid matches that contain a Vim pattern. You can
+use the "-x" option to the 'Lid' command to list only those lid matches that
+does not contain a Vim pattern.
 
-       :Lid -p
-       :Lid -v
+       :Lid -g
+       :Lid -x
 
 If you use the any one of the above options, you will prompted to enter the
 pattern you are interested in.
+
+You can specify additional command-line options accepted by the lid utility
+to the above commands.  For example, to perform a case-insensitive search,
+you can use the following command:
+
+      :Lid -i
+
+You can use the ":Aid" command to list all the matching keywords in the
+ID database that has the specified literal pattern:
+
+      :Aid <keyword>
+
+All the above description about the :Lid command also applies to the
+:Aid command.
 
 The output of the lid command will be listed in the Vim quickfix window.
 1. You can select a line in the quickfix window and press <Enter> or double
@@ -66,6 +87,7 @@ The output of the lid command will be listed in the Vim quickfix window.
 For more information about other quickfix commands read ":help quickfix"
 
 Configuration
+
 By changing the following variables you can configure the behavior of this
 plugin. Set the following variables in your .vimrc file using the 'let'
 command.
@@ -131,4 +153,14 @@ LID_Jump_To_Match variable to 0 to prevent this.  In this case, only the
 output from LID will be displayed.
 
       let LID_Jump_To_Match = 0
+
+By default, the lid search results are added to the global quickfix list.
+If you like to use the per-window location list for the results, then you
+can set the LID_Use_Location_List variable to 1:
+
+      let LID_Use_Location_List = 1
+
+The location list feature is supported only in Vim version 7.0 and later
+versions. If the location list is used, then you have to use the location
+list commands to browse the results.
 
